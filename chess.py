@@ -26,6 +26,7 @@ while running:
     gameBoard.center = centerScreen
 
     screen.fill(bgBrown)
+
     # Render checkerboard
     # First, render outer square in the center of screen
     pygame.draw.rect(screen, "red", gameBoard)
