@@ -35,7 +35,6 @@ def createGameBoard():
     centerScreen = pygame.Vector2(screenWidth / 2, screenHeight / 2)
     gameBoardSize = min(screenWidth, screenHeight) * BOARD_SCALE
     gameBoard = pygame.Surface((gameBoardSize, gameBoardSize))
-    gameBoard.fill("red")
     gameBoardTopLeft = (
         centerScreen.x - gameBoardSize / 2,
         centerScreen.y - gameBoardSize / 2,
@@ -51,13 +50,12 @@ def createGameBoard():
             )
             pygame.draw.rect(gameBoard, getColor(row, col), cell)
 
-    whitePlayer = Player()
+    whitePlayer = Player("white")
     for piece in whitePlayer.pieces:
-        whitePawn = pygame.image.load("images/white/pawn.svg")
-        whitePawn = pygame.transform.scale(
-            whitePawn, (gameBoardSize / ROWS, gameBoardSize / ROWS)
+        piece.image = pygame.transform.scale(
+            piece.image, (gameBoardSize / ROWS, gameBoardSize / ROWS)
         )
-        gameBoard.blit(whitePawn, piece.location * (gameBoardSize / ROWS))
+        gameBoard.blit(piece.image, piece.location * (gameBoardSize / ROWS))
 
     # Blit must come after everything in the gameBoard is updated
     screen.blit(gameBoard, gameBoardTopLeft)
