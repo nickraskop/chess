@@ -2,7 +2,6 @@ import pygame
 
 
 class Piece:
-    # This will likely contain location, isDead, isMoving, etc
     pieceType: str = None
     color: str = None  # Might want to switch to enum (white, black)
     location: pygame.Vector2 = pygame.Vector2(0, 0)

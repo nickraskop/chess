@@ -17,16 +17,17 @@ running = True
 ROWS = 8
 BOARD_SCALE = 0.7
 BROWN = pygame.Color(168, 94, 50)
+GRAY = pygame.Color(84, 83, 77)
 
 
 def getColor(r, c):
     color = "beige"
     if r % 2 == 0:
         if c % 2 == 0:
-            color = "black"
+            color = BROWN
     else:
         if c % 2 != 0:
-            color = "black"
+            color = BROWN
     return color
 
 
@@ -51,7 +52,8 @@ def createGameBoard():
             pygame.draw.rect(gameBoard, getColor(row, col), cell)
 
     whitePlayer = Player("white")
-    for piece in whitePlayer.pieces:
+    blackPlayer = Player("black")
+    for piece in whitePlayer.pieces + blackPlayer.pieces:
         piece.image = pygame.transform.scale(
             piece.image, (gameBoardSize / ROWS, gameBoardSize / ROWS)
         )
@@ -62,7 +64,7 @@ def createGameBoard():
 
 
 def handleVideoResize():
-    screen.fill(BROWN)
+    screen.fill(GRAY)
     createGameBoard()
 
 

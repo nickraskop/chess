@@ -12,46 +12,49 @@ class Player:
         self.initPieces()
 
     def addPiece(self, pieceType, loc):
-        newPiece = Piece(self.color, pieceType, loc)  # TODO: Allow black pieces
+        newPiece = Piece(self.color, pieceType, loc)
         self.pieces.append(newPiece)
 
     def initPieces(self):
-        self.initPawns()
-        self.initRooks()
-        self.initKnights()
-        self.initBishops()
-        self.initQueen()
-        self.initKing()
+        if self.color == "white":
+            backLine, frontLine = 7, 6
+        else:
+            backLine, frontLine = 0, 1
 
-    def initPawns(self):
+        self.initPawns(frontLine)
+        self.initRooks(backLine)
+        self.initKnights(backLine)
+        self.initBishops(backLine)
+        self.initQueen(backLine)
+        self.initKing(backLine)
+
+    def initPawns(self, rank):
         for col in range(8):
-            self.addPiece(
-                "pawn", pygame.Vector2(col, 6)
-            )  # Not sure why its (col, 1) instead of (1, col)
+            self.addPiece("pawn", pygame.Vector2(col, rank))
 
-    def initRooks(self):
-        # Left rook
-        self.addPiece("rook", pygame.Vector2(0, 7))
-
-        # Right rook
-        self.addPiece("rook", pygame.Vector2(7, 7))
-
-    def initKnights(self):
-        # Left knight
-        self.addPiece("knight", pygame.Vector2(1, 7))
-
-        # Right knight
-        self.addPiece("knight", pygame.Vector2(6, 7))
-
-    def initBishops(self):
+    def initRooks(self, rank):
         # Left
-        self.addPiece("bishop", pygame.Vector2(2, 7))
+        self.addPiece("rook", pygame.Vector2(0, rank))
 
         # Right
-        self.addPiece("bishop", pygame.Vector2(5, 7))
+        self.addPiece("rook", pygame.Vector2(7, rank))
 
-    def initQueen(self):
-        self.addPiece("queen", pygame.Vector2(3, 7))
+    def initKnights(self, rank):
+        # Left
+        self.addPiece("knight", pygame.Vector2(1, rank))
 
-    def initKing(self):
-        self.addPiece("king", pygame.Vector2(4, 7))
+        # Right
+        self.addPiece("knight", pygame.Vector2(6, rank))
+
+    def initBishops(self, rank):
+        # Left
+        self.addPiece("bishop", pygame.Vector2(2, rank))
+
+        # Right
+        self.addPiece("bishop", pygame.Vector2(5, rank))
+
+    def initQueen(self, rank):
+        self.addPiece("queen", pygame.Vector2(3, rank))
+
+    def initKing(self, rank):
+        self.addPiece("king", pygame.Vector2(4, rank))
