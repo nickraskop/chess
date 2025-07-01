@@ -15,8 +15,40 @@ running = True
 BROWN = pygame.Color(168, 94, 50)
 
 
+# TODO: Piece Class
+class Piece:
+    # This will likely contain location, isDead, isMoving, etc
+    pieceType = None
+    location = pygame.Vector2(0, 0)
+    isDead = False
+
+    def __init__(self, pieceType, loc):
+        self.pieceType = pieceType
+        self.location = loc
+
+
+class Player:
+    pieces = []
+
+    def __init__(self):
+        self.initPieces()
+
+    def addPiece(self, pieceType, loc):
+        newPiece = Piece(pieceType, loc)
+        self.pieces.append(newPiece)
+
+    def initPieces(self):
+        self.createPawns()
+
+    def createPawns(self):
+        for col in range(8):
+            self.addPiece(
+                "pawn", pygame.Vector2(col, 1)
+            )  # Not sure why its (col, 1) instead of (1, col)
+
+
 def getColor(r, c):
-    color = "white"
+    color = "beige"
     if r % 2 == 0:
         if c % 2 == 0:
             color = "black"
@@ -46,6 +78,14 @@ def createGameBoard():
                 gameBoardSize / 8,
             )
             pygame.draw.rect(gameBoard, getColor(row, col), cell)
+
+    whitePlayer = Player()
+    for piece in whitePlayer.pieces:
+        whitePawn = pygame.image.load("images/whitePawn.svg")
+        whitePawn = pygame.transform.scale(
+            whitePawn, (gameBoardSize / 8, gameBoardSize / 8)
+        )
+        gameBoard.blit(whitePawn, piece.location * (gameBoardSize / 8))
 
     # Blit must come after everything in the gameBoard is updated
     screen.blit(gameBoard, gameBoardTopLeft)
