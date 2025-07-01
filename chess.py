@@ -81,7 +81,7 @@ def createGameBoard():
 
     whitePlayer = Player()
     for piece in whitePlayer.pieces:
-        whitePawn = pygame.image.load("images/whitePawn.svg")
+        whitePawn = pygame.image.load("images/white/pawn.svg")
         whitePawn = pygame.transform.scale(
             whitePawn, (gameBoardSize / 8, gameBoardSize / 8)
         )
