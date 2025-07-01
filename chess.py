@@ -1,23 +1,20 @@
-import pygame
+import pygame as pg
 from pygame._sdl2 import Window
 
 from Player import Player
 
 # pygame setup
-pygame.init()
-pygame.display.set_caption("NICK CHESS")
-screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
-gameBoard = pygame.Surface((50, 50))
+pg.init()
+pg.display.set_caption("NICK CHESS")
+screen = pg.display.set_mode((1280, 720), pg.RESIZABLE)
+gameBoard = pg.Surface((50, 50))
 Window.from_display_module().maximize()
-clock = (
-    pygame.time.Clock()
-)  # Not needed right now, but potentially will use later for time controls
 running = True
 
-ROWS = 8
+BOARD_SIZE = 8
 BOARD_SCALE = 0.7
-BROWN = pygame.Color(168, 94, 50)
-GRAY = pygame.Color(84, 83, 77)
+BROWN = pg.Color(168, 94, 50)
+GRAY = pg.Color(84, 83, 77)
 
 
 def getColor(r, c):
@@ -32,32 +29,32 @@ def getColor(r, c):
 
 
 def createGameBoard():
-    screenWidth, screenHeight = pygame.display.get_surface().get_size()
-    centerScreen = pygame.Vector2(screenWidth / 2, screenHeight / 2)
+    screenWidth, screenHeight = pg.display.get_surface().get_size()
+    centerScreen = pg.Vector2(screenWidth / 2, screenHeight / 2)
     gameBoardSize = min(screenWidth, screenHeight) * BOARD_SCALE
-    gameBoard = pygame.Surface((gameBoardSize, gameBoardSize))
+    gameBoard = pg.Surface((gameBoardSize, gameBoardSize))
     gameBoardTopLeft = (
         centerScreen.x - gameBoardSize / 2,
         centerScreen.y - gameBoardSize / 2,
     )
 
-    for row in range(ROWS):
-        for col in range(ROWS):
-            cell = pygame.Rect(
-                row * (gameBoardSize / ROWS),
-                col * (gameBoardSize / ROWS),
-                gameBoardSize / ROWS,
-                gameBoardSize / ROWS,
+    for rank in range(BOARD_SIZE):
+        for file in range(BOARD_SIZE):
+            cell = pg.Rect(
+                rank * (gameBoardSize / BOARD_SIZE),
+                file * (gameBoardSize / BOARD_SIZE),
+                gameBoardSize / BOARD_SIZE,
+                gameBoardSize / BOARD_SIZE,
             )
-            pygame.draw.rect(gameBoard, getColor(row, col), cell)
+            pg.draw.rect(gameBoard, getColor(rank, file), cell)
 
     whitePlayer = Player("white")
     blackPlayer = Player("black")
     for piece in whitePlayer.pieces + blackPlayer.pieces:
-        piece.image = pygame.transform.scale(
-            piece.image, (gameBoardSize / ROWS, gameBoardSize / ROWS)
+        piece.image = pg.transform.scale(
+            piece.image, (gameBoardSize / BOARD_SIZE, gameBoardSize / BOARD_SIZE)
         )
-        gameBoard.blit(piece.image, piece.location * (gameBoardSize / ROWS))
+        gameBoard.blit(piece.image, piece.location * (gameBoardSize / BOARD_SIZE))
 
     # Blit must come after everything in the gameBoard is updated
     screen.blit(gameBoard, gameBoardTopLeft)
@@ -70,13 +67,13 @@ def handleVideoResize():
 
 while running:
     # Poll for events
-    for event in pygame.event.get():
-        if event.type == pygame.VIDEORESIZE:
+    for event in pg.event.get():
+        if event.type == pg.VIDEORESIZE:
             handleVideoResize()
-        if event.type == pygame.QUIT:
+        if event.type == pg.QUIT:
             running = False
 
     # flip() the display to put your work on screen
-    pygame.display.flip()
+    pg.display.flip()
 
-pygame.quit()
+pg.quit()

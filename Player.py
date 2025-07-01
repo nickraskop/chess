@@ -1,6 +1,17 @@
-import pygame
+import pygame as pg
 
 from Piece import Piece
+
+INITIAL_FILES = {
+    "leftRook": 0,
+    "rightRook": 7,
+    "leftKnight": 1,
+    "rightKnight": 6,
+    "leftBishop": 2,
+    "rightBishop": 5,
+    "queen": 3,
+    "king": 4,
+}
 
 
 class Player:
@@ -30,31 +41,22 @@ class Player:
 
     def initPawns(self, rank):
         for col in range(8):
-            self.addPiece("pawn", pygame.Vector2(col, rank))
+            self.addPiece("pawn", pg.Vector2(col, rank))
 
     def initRooks(self, rank):
-        # Left
-        self.addPiece("rook", pygame.Vector2(0, rank))
-
-        # Right
-        self.addPiece("rook", pygame.Vector2(7, rank))
+        self.addPiece("rook", pg.Vector2(INITIAL_FILES["leftRook"], rank))  # Left
+        self.addPiece("rook", pg.Vector2(INITIAL_FILES["rightRook"], rank))  # Right
 
     def initKnights(self, rank):
-        # Left
-        self.addPiece("knight", pygame.Vector2(1, rank))
-
-        # Right
-        self.addPiece("knight", pygame.Vector2(6, rank))
+        self.addPiece("knight", pg.Vector2(INITIAL_FILES["leftKnight"], rank))  # Left
+        self.addPiece("knight", pg.Vector2(INITIAL_FILES["rightKnight"], rank))  # Right
 
     def initBishops(self, rank):
-        # Left
-        self.addPiece("bishop", pygame.Vector2(2, rank))
-
-        # Right
-        self.addPiece("bishop", pygame.Vector2(5, rank))
+        self.addPiece("bishop", pg.Vector2(INITIAL_FILES["leftBishop"], rank))  # Left
+        self.addPiece("bishop", pg.Vector2(INITIAL_FILES["rightBishop"], rank))  # Right
 
     def initQueen(self, rank):
-        self.addPiece("queen", pygame.Vector2(3, rank))
+        self.addPiece("queen", pg.Vector2(INITIAL_FILES["queen"], rank))
 
     def initKing(self, rank):
-        self.addPiece("king", pygame.Vector2(4, rank))
+        self.addPiece("king", pg.Vector2(INITIAL_FILES["king"], rank))
