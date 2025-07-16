@@ -3,7 +3,7 @@ import pygame as pg
 
 class Piece:
     pieceType: str = None
-    color: str = None  # Might want to switch to enum (white, black)
+    color: str = None
     location: pg.Vector2 = pg.Vector2(0, 0)
     isDead: bool = False
     image: pg.Surface = None

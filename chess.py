@@ -1,7 +1,6 @@
 import pygame as pg
 from pygame._sdl2 import Window
 
-from ChessBoard import ChessBoard
 from ChessGame import ChessGame
 
 # pygame setup
@@ -14,7 +13,7 @@ Window.from_display_module().maximize()
 clock = pg.time.Clock()
 running = True
 chessGame = ChessGame()
-chessBoard = ChessBoard()
+chessBoard = chessGame.getChessBoard()
 debugMsg = "chess"
 
 BOARD_SIZE = 8
@@ -51,24 +50,35 @@ def getColor(r, c):
     return color
 
 
+def renderCells(rank, file):
+    cell = pg.Rect(
+        rank * (chessBoard.size / BOARD_SIZE),
+        file * (chessBoard.size / BOARD_SIZE),
+        chessBoard.size / BOARD_SIZE,
+        chessBoard.size / BOARD_SIZE,
+    )
+    pg.draw.rect(chessBoard.surface, getColor(rank, file), cell)
+
+
+def renderPieces(rank, file):
+    # Render pieces
+    piece = chessBoard.board[rank][file]
+    if piece:
+        # print(chessBoard.board, file, rank, piece)
+        pieceImage = pg.transform.scale(
+            piece.image,
+            (chessBoard.size / BOARD_SIZE, chessBoard.size / BOARD_SIZE),
+        )
+        chessBoard.surface.blit(
+            pieceImage, piece.location * (chessBoard.size / BOARD_SIZE)
+        )
+
+
 def drawChessBoard():
     for rank in range(BOARD_SIZE):
         for file in range(BOARD_SIZE):
-            cell = pg.Rect(
-                rank * (chessBoard.size / BOARD_SIZE),
-                file * (chessBoard.size / BOARD_SIZE),
-                chessBoard.size / BOARD_SIZE,
-                chessBoard.size / BOARD_SIZE,
-            )
-            pg.draw.rect(chessBoard.surface, getColor(rank, file), cell)
-
-    for piece in chessGame.whitePlayer.pieces + chessGame.blackPlayer.pieces:
-        piece.image = pg.transform.scale(
-            piece.image, (chessBoard.size / BOARD_SIZE, chessBoard.size / BOARD_SIZE)
-        )
-        chessBoard.surface.blit(
-            piece.image, piece.location * (chessBoard.size / BOARD_SIZE)
-        )
+            renderCells(rank, file)
+            renderPieces(rank, file)
 
     screen.blit(chessBoard.surface, chessBoard.topLeft)
 
@@ -96,9 +106,10 @@ while running:
 
     updateScreen()
     getCurrentCell()
+    chessBoard.printBoard()
 
     # flip() the display to put your work on screen
     pg.display.flip()
-    clock.tick(60)  # Limit 60 fps
+    clock.tick(30)  # Limit 30 fps
 
 pg.quit()

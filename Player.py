@@ -1,5 +1,6 @@
 import pygame as pg
 
+from ChessBoard import ChessBoard
 from Piece import Piece
 
 INITIAL_FILES = {
@@ -15,16 +16,13 @@ INITIAL_FILES = {
 
 
 class Player:
-    pieces: list[Piece] = []
     color: str = ""
+    chessBoard: ChessBoard = None
 
-    def __init__(self, color):
+    def __init__(self, color: str, chessBoard: ChessBoard):
         self.color = color
+        self.chessBoard = chessBoard
         self.initPieces()
-
-    def addPiece(self, pieceType, loc):
-        newPiece = Piece(self.color, pieceType, loc)
-        self.pieces.append(newPiece)
 
     def initPieces(self):
         if self.color == "white":
@@ -40,23 +38,44 @@ class Player:
         self.initKing(backLine)
 
     def initPawns(self, rank):
-        for col in range(8):
-            self.addPiece("pawn", pg.Vector2(col, rank))
+        for file in range(8):
+            pawn = Piece(self.color, "pawn", pg.Vector2(file, rank))
+            self.chessBoard.addPiece(pawn)
 
     def initRooks(self, rank):
-        self.addPiece("rook", pg.Vector2(INITIAL_FILES["leftRook"], rank))  # Left
-        self.addPiece("rook", pg.Vector2(INITIAL_FILES["rightRook"], rank))  # Right
+        leftRook = Piece(
+            self.color, "rook", pg.Vector2(INITIAL_FILES["leftRook"], rank)
+        )
+        rightRook = Piece(
+            self.color, "rook", pg.Vector2(INITIAL_FILES["rightRook"], rank)
+        )
+        self.chessBoard.addPiece(leftRook)
+        self.chessBoard.addPiece(rightRook)
 
     def initKnights(self, rank):
-        self.addPiece("knight", pg.Vector2(INITIAL_FILES["leftKnight"], rank))  # Left
-        self.addPiece("knight", pg.Vector2(INITIAL_FILES["rightKnight"], rank))  # Right
+        leftKnight = Piece(
+            self.color, "knight", pg.Vector2(INITIAL_FILES["leftKnight"], rank)
+        )
+        rightKnight = Piece(
+            self.color, "knight", pg.Vector2(INITIAL_FILES["rightKnight"], rank)
+        )
+        self.chessBoard.addPiece(leftKnight)
+        self.chessBoard.addPiece(rightKnight)
 
     def initBishops(self, rank):
-        self.addPiece("bishop", pg.Vector2(INITIAL_FILES["leftBishop"], rank))  # Left
-        self.addPiece("bishop", pg.Vector2(INITIAL_FILES["rightBishop"], rank))  # Right
+        leftBishop = Piece(
+            self.color, "bishop", pg.Vector2(INITIAL_FILES["leftBishop"], rank)
+        )
+        rightBishop = Piece(
+            self.color, "bishop", pg.Vector2(INITIAL_FILES["rightBishop"], rank)
+        )
+        self.chessBoard.addPiece(leftBishop)
+        self.chessBoard.addPiece(rightBishop)
 
     def initQueen(self, rank):
-        self.addPiece("queen", pg.Vector2(INITIAL_FILES["queen"], rank))
+        queen = Piece(self.color, "queen", pg.Vector2(INITIAL_FILES["queen"], rank))
+        self.chessBoard.addPiece(queen)
 
     def initKing(self, rank):
-        self.addPiece("king", pg.Vector2(INITIAL_FILES["king"], rank))
+        king = Piece(self.color, "king", pg.Vector2(INITIAL_FILES["king"], rank))
+        self.chessBoard.addPiece(king)
